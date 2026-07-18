@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="index, follow">
+    <title>How to Keep Your Minecraft World Stable When Using Jenny Mod</title>
+    <meta name="description" content="Learn how to keep your Minecraft world stable when using Jenny Mod. Tips on avoiding crashes, black screens, and corrupted worlds with Jenny's NPC systems.">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: #0f0c0a;
+            color: #e8ddd5;
+            line-height: 1.75;
+            padding: 0;
+        }
+
+        /* TOP HERO BAND */
+        .hero {
+            background: linear-gradient(120deg, #b5451b 0%, #e8752a 45%, #c94f1e 100%);
+            padding: 80px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -60px; left: -60px;
+            width: 300px; height: 300px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -80px; right: -40px;
+            width: 400px; height: 400px;
+            background: rgba(0,0,0,0.1);
+            border-radius: 50%;
+        }
+        .hero-inner { max-width: 800px; margin: 0 auto; position: relative; z-index: 2; }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: #fff;
+            font-size: 0.78em;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            padding: 6px 18px;
+            border-radius: 50px;
+            margin-bottom: 22px;
+        }
+        .hero h1 {
+            font-size: 2.8em;
+            font-weight: 900;
+            color: #fff;
+            line-height: 1.2;
+            margin-bottom: 18px;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        .hero p {
+            font-size: 1.15em;
+            color: rgba(255,255,255,0.88);
+            max-width: 580px;
+            margin: 0 auto;
+        }
+
+        /* MAIN LAYOUT */
+        .page-wrap {
+            max-width: 1060px;
+            margin: 0 auto;
+            padding: 60px 24px;
+        }
+
+        /* STAT STRIP */
+        .stat-strip {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+            margin-bottom: 60px;
+        }
+        .stat-item {
+            background: #1c1612;
+            border: 1px solid #3a2a1a;
+            border-top: 3px solid #e8752a;
+            padding: 24px 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .stat-num {
+            font-size: 2.2em;
+            font-weight: 900;
+            color: #e8752a;
+            line-height: 1;
+            margin-bottom: 6px;
+        }
+        .stat-label {
+            font-size: 0.82em;
+            color: #a08070;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* CONTENT BLOCKS */
+        .block {
+            background: #1c1612;
+            border: 1px solid #2e1f10;
+            border-radius: 14px;
+            padding: 44px;
+            margin-bottom: 28px;
+            position: relative;
+            overflow: hidden;
+        }
+        .block::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #e8752a, #b5451b);
+        }
+        .block:nth-child(even)::before {
+            background: linear-gradient(90deg, #c94f1e, #8b2e0a);
+        }
+        .block:nth-child(3n)::before {
+            background: linear-gradient(90deg, #f0a050, #e8752a);
+        }
+        .block-icon {
+            font-size: 2em;
+            margin-bottom: 14px;
+            display: block;
+        }
+        .block h2 {
+            font-size: 1.7em;
+            font-weight: 900;
+            color: #e8752a;
+            margin-bottom: 18px;
+            letter-spacing: -0.3px;
+        }
+        .block:nth-child(even) h2 { color: #f0a050; }
+        .block:nth-child(3n) h2 { color: #d46030; }
+        .block h3 {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #e8752a;
+            margin: 24px 0 12px;
+        }
+        .block p {
+            font-size: 1.04em;
+            color: #c8b8a8;
+            margin-bottom: 16px;
+            text-align: justify;
+        }
+
+        /* STEPS ROW */
+        .steps-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin: 28px 0;
+        }
+        .step-card {
+            background: linear-gradient(160deg, #2a1a0a, #1c1208);
+            border: 1px solid #3a2510;
+            border-radius: 12px;
+            padding: 24px 18px;
+            text-align: center;
+        }
+        .step-num {
+            width: 44px; height: 44px;
+            background: linear-gradient(135deg, #e8752a, #b5451b);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1em;
+            font-weight: 900;
+            color: #fff;
+            margin: 0 auto 14px;
+        }
+        .step-title {
+            font-weight: 700;
+            font-size: 1em;
+            color: #e8d5c0;
+            margin-bottom: 8px;
+        }
+        .step-desc {
+            font-size: 0.88em;
+            color: #9a7a60;
+            line-height: 1.5;
+        }
+
+        /* ALERT BOX */
+        .alert {
+            background: linear-gradient(135deg, rgba(232, 117, 42, 0.12), rgba(181, 69, 27, 0.06));
+            border: 2px solid #e8752a;
+            border-radius: 10px;
+            padding: 24px 28px;
+            margin: 24px 0;
+        }
+        .alert-title {
+            font-weight: 900;
+            color: #e8752a;
+            font-size: 1.05em;
+            margin-bottom: 10px;
+        }
+        .alert p { color: #c0a080; margin: 0; }
+
+        /* CHECKLIST */
+        .check-list {
+            list-style: none;
+            margin: 20px 0;
+        }
+        .check-list li {
+            padding: 10px 0 10px 38px;
+            position: relative;
+            color: #c8b8a8;
+            font-size: 1.02em;
+            border-bottom: 1px solid #2a1a0a;
+        }
+        .check-list li:last-child { border-bottom: none; }
+        .check-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 8px;
+            color: #e8752a;
+            font-weight: 900;
+            font-size: 1.1em;
+        }
+
+        /* TWO-COL */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 24px 0;
+        }
+        @media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } }
+        .col-box {
+            background: #231810;
+            border: 1px solid #3a2510;
+            border-radius: 10px;
+            padding: 22px;
+        }
+        .col-box-title {
+            font-weight: 800;
+            color: #e8752a;
+            margin-bottom: 12px;
+            font-size: 1em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .col-box ul { list-style: none; margin: 0; }
+        .col-box ul li {
+            padding: 6px 0 6px 22px;
+            position: relative;
+            color: #a89080;
+            font-size: 0.95em;
+        }
+        .col-box ul li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: #b5451b;
+            font-weight: 700;
+        }
+
+        /* LINK STYLE */
+        a { color: #e8752a; text-decoration: none; font-weight: 700; border-bottom: 2px solid rgba(232,117,42,0.4); transition: border-color 0.2s; }
+        a:hover { border-color: #e8752a; }
+
+        /* FOOTER */
+        footer {
+            background: #0a0806;
+            border-top: 2px solid #2e1a08;
+            padding: 36px 24px;
+            text-align: center;
+            color: #6a5040;
+            font-size: 0.92em;
+        }
+        footer span { color: #e8752a; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 1.9em; }
+            .block { padding: 26px; }
+            .hero { padding: 50px 24px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hero">
+        <div class="hero-inner">
+            <span class="hero-badge">Stability Guide</span>
+            <h1>How to Keep Your Minecraft World Stable When Using Jenny Mod</h1>
+            <p>Prevent crashes, black screens, and corrupted saves before they happen.</p>
+        </div>
+    </div>
+
+    <div class="page-wrap">
+
+        <!-- STAT STRIP -->
+        <div class="stat-strip">
+            <div class="stat-item">
+                <div class="stat-num">#1</div>
+                <div class="stat-label">New Save First</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num">0</div>
+                <div class="stat-label">Conflicting Mods</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num">✓</div>
+                <div class="stat-label">Compatible Version</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num">3x</div>
+                <div class="stat-label">Backup Before Play</div>
+            </div>
+        </div>
+
+        <!-- INTRO -->
+        <div class="block">
+            <span class="block-icon">🧱</span>
+            <h2>Why World Stability Matters</h2>
+            <p><a href="https://jennymod.com.br/">Jenny mod</a> adds advanced NPC systems, custom structures, and layered dialogue trees that interact deeply with Minecraft's world engine. That complexity is what makes the mod so rewarding — but it also means a careless installation can destabilize your save. Crashes mid-session, black screen loops on load, and silently corrupted chunk data are all real risks when any heavy mod is layered onto an existing world without preparation.</p>
+            <p>The good news is that most stability problems are entirely preventable. With a few deliberate steps taken before your first session, you protect both the mod experience and the worlds you have already spent hours building. This guide walks you through each of those steps in plain language.</p>
+            <div class="alert">
+                <div class="alert-title">⚠ Always back up first</div>
+                <p>Copy your entire <code>.minecraft/saves</code> folder to a separate location before installing any mod. Recovery from a backup takes two minutes; recovery from a corrupted world can be impossible.</p>
+            </div>
+        </div>
+
+        <!-- STEPS -->
+        <div class="block">
+            <span class="block-icon">📋</span>
+            <h2>Core Stability Steps</h2>
+            <p>These three actions form the foundation of a stable Jenny Mod setup. Skip any one of them and you introduce unnecessary risk.</p>
+            <div class="steps-row">
+                <div class="step-card">
+                    <div class="step-num">1</div>
+                    <div class="step-title">Test in a New Save</div>
+                    <div class="step-desc">Always run the mod in a fresh world before adding it to a world you care about.</div>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">2</div>
+                    <div class="step-title">Remove Conflicting Mods</div>
+                    <div class="step-desc">Identify and disable mods that alter NPC behaviour or world generation simultaneously.</div>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">3</div>
+                    <div class="step-title">Match Minecraft Version</div>
+                    <div class="step-desc">Confirm the Jenny Mod build number matches your installed Minecraft and Forge version exactly.</div>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">4</div>
+                    <div class="step-title">Monitor the Log</div>
+                    <div class="step-desc">Open the crash log after each session to catch silent errors before they snowball.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONFLICTS -->
+        <div class="block">
+            <span class="block-icon">⚡</span>
+            <h2>Avoiding Mod Conflicts</h2>
+            <p>Mod conflicts are the single most common cause of instability. When two mods attempt to control the same game system — spawn events, entity behaviour, or chunk loading — neither wins cleanly and the result ranges from minor glitches to complete world failure.</p>
+            <div class="two-col">
+                <div class="col-box">
+                    <div class="col-box-title">High-Risk Conflict Types</div>
+                    <ul>
+                        <li>Other NPC or relationship mods</li>
+                        <li>World generation overhauls</li>
+                        <li>Entity AI replacement mods</li>
+                        <li>Custom dialogue frameworks</li>
+                        <li>Chunk loading utilities</li>
+                    </ul>
+                </div>
+                <div class="col-box">
+                    <div class="col-box-title">Safe Companion Mods</div>
+                    <ul>
+                        <li>Cosmetic texture packs</li>
+                        <li>Inventory management tools</li>
+                        <li>Lighting and shader packs</li>
+                        <li>Map and mini-map mods</li>
+                        <li>Performance optimisers (OptiFine)</li>
+                    </ul>
+                </div>
+            </div>
+            <p>When in doubt, isolate the issue by testing Jenny Mod alone in a clean profile. Add companion mods back one at a time and test between each addition. This binary elimination process pinpoints the conflicting mod quickly without guesswork.</p>
+        </div>
+
+        <!-- VERSION MATCHING -->
+        <div class="block">
+            <span class="block-icon">🔢</span>
+            <h2>Matching Minecraft and Mod Versions</h2>
+            <p>Version mismatches are subtle. The game may launch, the world may load, and everything may appear fine until a specific interaction triggers a crash an hour into your session. Checking version compatibility before installation takes sixty seconds and saves hours of troubleshooting later.</p>
+            <ul class="check-list">
+                <li>Confirm the exact Minecraft version the mod was built for on the official reference page at <a href="https://jennymod.com.br/">jennymod.com.br</a></li>
+                <li>Match your Forge or Fabric loader version to the mod's stated requirements</li>
+                <li>Do not mix release builds with snapshot builds</li>
+                <li>Re-check version compatibility after every Minecraft automatic update</li>
+                <li>Keep a note of which combination is confirmed working for your setup</li>
+            </ul>
+        </div>
+
+        <!-- CRASH RECOVERY -->
+        <div class="block">
+            <span class="block-icon">🛠</span>
+            <h2>What to Do After a Crash</h2>
+            <p>Even with the best preparation, crashes can happen. How you respond in the first few minutes determines whether your world survives. Follow these steps immediately after any unexpected game closure.</p>
+            <div class="steps-row">
+                <div class="step-card">
+                    <div class="step-num">A</div>
+                    <div class="step-title">Do Not Relaunch Yet</div>
+                    <div class="step-desc">A second launch on a corrupted save can compound the damage. Read the log first.</div>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">B</div>
+                    <div class="step-title">Read the Crash Log</div>
+                    <div class="step-desc">Find crash-reports in your .minecraft folder. The last lines identify the failing mod or class.</div>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">C</div>
+                    <div class="step-title">Restore the Backup</div>
+                    <div class="step-desc">If the world fails to load, copy your backup save folder back into the saves directory.</div>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">D</div>
+                    <div class="step-title">Remove the Culprit</div>
+                    <div class="step-desc">Disable the mod identified in the log and test again before restoring anything else.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ONGOING HEALTH -->
+        <div class="block">
+            <span class="block-icon">🔄</span>
+            <h2>Maintaining Long-Term World Health</h2>
+            <p>Stability is an ongoing practice, not a single setup action. A world that runs smoothly today can develop problems after a Minecraft update or after you add a new mod to a running save. Build these habits into your regular play routine.</p>
+            <ul class="check-list">
+                <li>Back up your world folder at the start of every play session</li>
+                <li>Check for Jenny Mod updates every two weeks and read the changelog before updating</li>
+                <li>Trim unnecessary mods from your profile — fewer mods means fewer conflict surfaces</li>
+                <li>Allocate at least 4 GB of RAM to Minecraft in your launcher settings</li>
+                <li>Periodically run a world integrity check using a third-party tool</li>
+                <li>Keep your Java installation current to prevent low-level runtime errors</li>
+            </ul>
+            <div class="alert">
+                <div class="alert-title">💡 Pro habit</div>
+                <p>Name your backup folders with the date and mod list version, for example <code>world_backup_2026-07-16_v2.3</code>. When something goes wrong weeks later, you will know exactly which restore point to reach for.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Minecraft Mod Stability Guides &nbsp;|&nbsp; Content relates to <span>jenny mod</span> on <a href="https://jennymod.com.br/">jennymod.com.br</a></p>
+    </footer>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "How to Keep Your Minecraft World Stable When Using Jenny Mod",
+        "description": "Learn how to keep your Minecraft world stable when using Jenny Mod. Tips on avoiding crashes, black screens, and corrupted worlds with Jenny's NPC systems.",
+        "author": { "@type": "Organization", "@name": "Minecraft Mod Stability Guides" },
+        "publisher": { "@type": "Organization", "@name": "Minecraft Mod Stability Guides", "logo": { "@type": "ImageObject", "url": "https://example.com/logo.png" } },
+        "datePublished": "2026-01-01",
+        "dateModified": "2026-07-16"
+    }
+    </script>
+    <script>
+        const canonicalLink = document.createElement('link');
+        canonicalLink.rel = 'canonical';
+        canonicalLink.href = window.location.href;
+        document.head.appendChild(canonicalLink);
+    </script>
+</body>
+</html>
